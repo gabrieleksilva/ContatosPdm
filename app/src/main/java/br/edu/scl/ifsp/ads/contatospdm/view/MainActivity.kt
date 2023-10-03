@@ -15,6 +15,7 @@ import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
+import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
 
 class MainActivity : AppCompatActivity() {
@@ -50,19 +51,33 @@ class MainActivity : AppCompatActivity() {
                                         // como se fosse um getContacts
                 val contact = result.data?.getParcelableExtra<Contact>(EXTRA_CONTACT)
                 contact?.let {_contact ->
+                    //se o contato existe na linha substitui
                    if(contactList.any{ it.id == contact.id}) {
                        val position = contactList.indexOfFirst { it.id == _contact.id }
                        contactList[position] = _contact
-                   } else{
+                   } else{ //se nao, cria um novo id
                        contactList.add(_contact)
                    }
                     //comando que avisa quando um contato novo eh adicionado
                     contactAdapter.notifyDataSetChanged()
                 }
             }
-
-
         }
+        //findById
+        amb.contatosLv.setOnItemClickListener { adapterView, view, position, l ->
+            val contact = contactList[position]
+            val viewContactIntent = Intent(this, ContactActivity::class.java)
+            viewContactIntent.putExtra(EXTRA_CONTACT, contact)
+            viewContactIntent.putExtra(VIEW_CONTACT, true)
+            // carregando o contato para outra tela
+            startActivity(viewContactIntent)
+        }
+        //forma kotlin de find by id: criando uma classe anonima para criar um unico objeto
+//        amb.contatosLv.onItemClickListener = object: OnItemClickListener{
+//            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+//                TODO("Not yet implemented")
+//            }
+//        }
         registerForContextMenu(amb.contatosLv)
     }
 

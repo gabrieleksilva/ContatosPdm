@@ -6,7 +6,7 @@
     <item
         android:id="@+id/editContactMi"
         android:title="@string/edit_contact"/>
-    <item
-        android:id="@+id/visualizarContatoMi"
-        android:title="@string/visualizar_contact"/>
+<!--    <item-->
+<!--        android:id="@+id/visualizarContatoMi"-->
+<!--        android:title="@string/visualizar_contact"/>-->
 </menu>
