@@ -15,10 +15,28 @@ class ContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(acb.root)
+
+        setSupportActionBar(acb.toolBarIn.toolbar)
+        supportActionBar?.subtitle = "Contact details"
+
+        //recebendo o contato na hora que clica em editar
+        val receivedContact = intent.getParcelableExtra<Contact>(EXTRA_CONTACT)
+
+        //se não for nullo..
+        receivedContact?.let { _receivedContact ->
+            with(acb){
+                nameEt.setText(_receivedContact.name)
+                addressEt.setText(_receivedContact.address)
+                phoneEt.setText(_receivedContact.phone)
+                emailEt.setText(_receivedContact.email)
+            }
+        }
+
+
         with(acb){
             saveBt.setOnClickListener {
                 val contact: Contact = Contact(
-                    id = 0,
+                    id = receivedContact?.id?:generateId(),
                     name = nameEt.text.toString(),
                     address = addressEt.text.toString(),
                     phone = phoneEt.text.toString(),
