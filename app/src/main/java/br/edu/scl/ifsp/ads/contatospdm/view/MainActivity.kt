@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
+import br.edu.scl.ifsp.ads.contatospdm.controller.ContactController
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
@@ -23,7 +24,15 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
     //Data source
-    private val contactList: MutableList<Contact> = mutableListOf()
+    private val contactList: MutableList<Contact> by lazy {
+        contactController.getContacts() // busca os contatos no banco
+    }
+
+    //Controller
+    private val contactController: ContactController by lazy {
+        ContactController(this)
+    }
+
     //Adapter
     private val contactAdapter: ContactAdapter by lazy{
         ContactAdapter(
@@ -55,7 +64,17 @@ class MainActivity : AppCompatActivity() {
                    if(contactList.any{ it.id == contact.id}) {
                        val position = contactList.indexOfFirst { it.id == _contact.id }
                        contactList[position] = _contact
+                       contactList.sortBy { it.name }
+                       contactController.editContact(_contact)
                    } else{ //se nao, cria um novo id
+                       val newId = contactController.insertContact(_contact)
+                       val newContact = Contact(
+                           newId,
+                           _contact.name,
+                           _contact.address,
+                           _contact.phone,
+                           _contact.email
+                       )
                        contactList.add(_contact)
                    }
                     //comando que avisa quando um contato novo eh adicionado
