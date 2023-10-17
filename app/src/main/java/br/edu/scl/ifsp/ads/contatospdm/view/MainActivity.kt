@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(amb.toolBarIn.toolbar)
 
-        fillContacts()
+        //fillContacts()
         amb.contatosLv.adapter = contactAdapter
 
         carl = registerForActivityResult(
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                            _contact.phone,
                            _contact.email
                        )
-                       contactList.add(_contact)
+                       contactList.add(newContact)
                    }
                     //comando que avisa quando um contato novo eh adicionado
                     contactAdapter.notifyDataSetChanged()
@@ -130,15 +130,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = (item.menuInfo as AdapterContextMenuInfo).position
+        val contact = contactList[position]
         return when (item.itemId){
             R.id.removeContactMi -> {
+                contactController.removeContact(contact.id)
                 contactList.removeAt(position)
                 contactAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "Contract removed.", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.editContactMi -> {
-                val contact = contactList[position]
+
                 val editContactIntent = Intent(this, ContactActivity::class.java)
 
                 editContactIntent.putExtra(EXTRA_CONTACT, contact)

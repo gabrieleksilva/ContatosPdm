@@ -97,11 +97,10 @@ class ContactDaoSqlite(context: Context) : ContactDao {
 
     //faz parte do criar contato
     private fun Contact.toContentValues(): ContentValues = with(ContentValues()){
-        val cv = ContentValues()
-        cv.put(NAME_COLUMN, name)
-        cv.put(ADDRESS_COLUMN, address)
-        cv.put(PHONE_COLUMN, phone)
-        cv.put(EMAIL_COLUMN, email)
+        put(NAME_COLUMN, name)
+        put(ADDRESS_COLUMN, address)
+        put(PHONE_COLUMN, phone)
+        put(EMAIL_COLUMN, email)
         this //como se fosse return cv
     }
 }
