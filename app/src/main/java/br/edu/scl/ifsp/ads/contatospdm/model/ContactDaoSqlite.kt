@@ -83,8 +83,10 @@ class ContactDaoSqlite(context: Context) : ContactDao {
     )
     override fun deleteContact(id: Int) = contactsSqliteDatabase.delete(
         CONTACT_TABLE,
-        "$ID_COLUMN = $id",
-        null)
+        "$ID_COLUMN = ?",
+        arrayOf(id.toString())
+
+    )
 
     //retorna a linha atual do cursor transformando em um Contact
     private fun Cursor.rowToContact() = Contact(
