@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 val contact = result.data?.getParcelableExtra<Contact>(EXTRA_CONTACT)
                 contact?.let {_contact ->
                     //se o contato existe na linha substitui
-                   if(contactList.any{ it.id == contact.id}) {
+                   if(contactList.any{ it.id == _contact.id}) {
                        val position = contactList.indexOfFirst { it.id == _contact.id }
                        contactList[position] = _contact
                        contactList.sortBy { it.name }
